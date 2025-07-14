@@ -15,7 +15,45 @@ const fadeUpVariant = {
   hidden: { opacity: 0, y: 50 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
-
+import Link from "next/link";
+const events = [
+  {
+    title: "CASSANDRA",
+    img: "/images/CASSANDRA.svg",
+    ps: "/ps/cassandra",
+    register: "/register/cassandra",
+  },
+  {
+    title: "COMMNET",
+    img: "/images/COMMNET.svg",
+    ps: "/ps/commnet",
+    register: "/register/commnet",
+  },
+  {
+    title: "DEVBITS",
+    img: "/images/DEVBITS.svg",
+    ps: "/ps/devbits",
+    register: "/register/devbits",
+  },
+  {
+    title: "DIGISIM",
+    img: "/images/DIGISIM.svg",
+    ps: "/ps/digisim",
+    register: "/register/digisim",
+  },
+  {
+    title: "FUNCKIT",
+    img: "/images/FUNCKIT.svg",
+    ps: "/ps/funckit",
+    register: "/register/funckit",
+  },
+  {
+    title: "MOSAIC",
+    img: "/images/events-mosaic-background.svg",
+    ps: "/ps/mosaic",
+    register: "/register/mosaic",
+  },
+];
 function AnimateOnScroll({ children }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
@@ -138,6 +176,52 @@ export default function Home() {
           </AnimateOnScroll>
         </section>
 
+        <section
+          id="events"
+          className="w-full py-24 px-4 sm:px-8 md:px-16 lg:px-24 text-center"
+        >
+          <AnimateOnScroll>
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-12 drop-shadow-glow text-white">
+                Our Signature Events
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                {events.map((event) => (
+                  <div
+                    key={event.title}
+                    className="bg-white/5 backdrop-blur-md p-6 rounded-xl shadow-xl border border-white/10 hover:border-white/30 transition duration-300 flex flex-col items-center text-white"
+                  >
+                    <div className="relative w-full h-40 mb-4">
+                      <Image
+                        src={event.img}
+                        alt={event.title}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-4">
+                      {event.title}
+                    </h3>
+                    <div className="flex flex-col sm:flex-row gap-3 w-full">
+                      <Link
+                        href={event.ps}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm transition"
+                      >
+                        Check Out PS
+                      </Link>
+                      <Link
+                        href={event.register}
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-sm transition"
+                      >
+                        Register
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </section>
         {/* Gallery */}
         <section id="gallery" className="w-full py-20 text-center">
           <AnimateOnScroll>

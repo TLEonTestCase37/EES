@@ -111,235 +111,200 @@ export default function SignUp() {
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <div className="flex w-full max-w-lg flex-col gap-6">
-        <Tabs defaultValue="Student">
-          <TabsList>
-            <TabsTrigger value="Student">Student</TabsTrigger>
-            <TabsTrigger value="Alumni">Alumni</TabsTrigger>
-          </TabsList>
+    <div className="relative w-screen min-h-screen overflow-auto">
+      {/* Background */}
+      <div className="fixed inset-0 z-0 bg-[url('/Alumni_Background.png')] bg-cover bg-center bg-no-repeat bg-fixed" />
+      <div className="fixed inset-0 z-0 bg-black/50" />
 
-          <TabsContent value="Student">
-            <Card>
-              <CardHeader>
-                <CardTitle>Student Sign Up</CardTitle>
-                <CardDescription>
-                  Fill your details as a student. Click save when you're done.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="student-name">Full Name</Label>
-                  <Input
-                    id="student-name"
-                    placeholder="John Doe"
-                    value={studentInfo.name}
-                    onChange={(e) =>
-                      setStudentInfo({ ...studentInfo, name: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="student-email">Institute Email</Label>
-                  <Input
-                    id="student-email"
-                    type="email"
-                    placeholder="virat.kohli23@itbhu.ac.in"
-                    value={studentInfo.email}
-                    onChange={(e) =>
-                      setStudentInfo({ ...studentInfo, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="student-password">Password</Label>
-                  <Input
-                    id="student-password"
-                    type="password"
-                    placeholder="password"
-                    value={studentInfo.password}
-                    onChange={(e) =>
-                      setStudentInfo({
-                        ...studentInfo,
-                        password: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+      {/* Content */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-12">
+        <div className="flex w-full max-w-4xl flex-col gap-6">
+          <Tabs defaultValue="Student">
+            <TabsList className="w-full justify-center bg-white/10 backdrop-blur-sm border border-white/20">
+              <TabsTrigger value="Student">Student</TabsTrigger>
+              <TabsTrigger value="Alumni">Alumni</TabsTrigger>
+            </TabsList>
+
+            {/* Student Form */}
+            <TabsContent value="Student">
+              <Card className="backdrop-blur-md bg-white/10 border border-white/20 text-white">
+                <CardHeader>
+                  <CardTitle>Student Sign Up</CardTitle>
+                  <CardDescription>
+                    Fill your details as a student. Click submit when you're done.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="student-roll">Institute Roll Number</Label>
+                    <Label htmlFor="student-name">Full Name</Label>
                     <Input
-                      id="student-roll"
-                      placeholder="23095000"
-                      value={studentInfo.rollNo}
-                      onChange={(e) =>
-                        setStudentInfo({
-                          ...studentInfo,
-                          rollNo: e.target.value,
-                        })
+                      id="student-name"
+                      placeholder="John Doe"
+                      value={studentInfo.name}
+                      onChange={(e) => setStudentInfo({ ...studentInfo, name: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="student-email">Institute Email</Label>
+                    <Input
+                      id="student-email"
+                      type="email"
+                      placeholder="virat.kohli23@itbhu.ac.in"
+                      value={studentInfo.email}
+                      onChange={(e) => setStudentInfo({ ...studentInfo, email: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="student-password">Password</Label>
+                    <Input
+                      id="student-password"
+                      type="password"
+                      placeholder="password"
+                      value={studentInfo.password}
+                      onChange={(e) => setStudentInfo({ ...studentInfo, password: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="student-roll">Institute Roll Number</Label>
+                      <Input
+                        id="student-roll"
+                        placeholder="23095000"
+                        value={studentInfo.rollNo}
+                        onChange={(e) => setStudentInfo({ ...studentInfo, rollNo: e.target.value })}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="student-grad-year">Graduation Year</Label>
+                      <Input
+                        id="student-grad-year"
+                        type="number"
+                        value={studentInfo.gradYear}
+                        onChange={(e) => setStudentInfo({ ...studentInfo, gradYear: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Areas of Interest</Label>
+                    <MultiSelectDropdown
+                      selected={studentInfo.interests}
+                      setSelected={(newInterests) =>
+                        setStudentInfo({ ...studentInfo, interests: newInterests })
                       }
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="student-grad-year">Graduation Year</Label>
-                    <Input
-                      id="student-grad-year"
-                      type="number"
-                      value={studentInfo.gradYear}
+                    <Label htmlFor="student-description">Description</Label>
+                    <Textarea
+                      id="student-description"
+                      placeholder="A brief description about yourself..."
+                      value={studentInfo.description}
                       onChange={(e) =>
-                        setStudentInfo({
-                          ...studentInfo,
-                          gradYear: e.target.value,
-                        })
+                        setStudentInfo({ ...studentInfo, description: e.target.value })
                       }
                     />
                   </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label>Areas of Interest</Label>
-                  <MultiSelectDropdown
-                    selected={studentInfo.interests}
-                    setSelected={(newInterests) =>
-                      setStudentInfo({
-                        ...studentInfo,
-                        interests: newInterests,
-                      })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="student-description">Description</Label>
-                  <Textarea
-                    id="student-description"
-                    placeholder="A brief description about yourself..."
-                    value={studentInfo.description}
-                    onChange={(e) =>
-                      setStudentInfo({
-                        ...studentInfo,
-                        description: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" onClick={handleStudentSubmit}>
-                  Submit as Student
-                </Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-          <TabsContent value="Alumni">
-            <Card>
-              <CardHeader>
-                <CardTitle>Alumni Sign Up</CardTitle>
-                <CardDescription>
-                  Fill your alumni details. Click save when you're done.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="alumni-name">Full Name</Label>
-                  <Input
-                    id="alumni-name"
-                    placeholder="Jane Smith"
-                    value={alumniInfo.name}
-                    onChange={(e) =>
-                      setAlumniInfo({ ...alumniInfo, name: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="alum-email">Email</Label>
-                  <Input
-                    id="alum-email"
-                    type="email"
-                    placeholder="someone@gmail.com"
-                    value={alumniInfo.email}
-                    onChange={(e) =>
-                      setAlumniInfo({ ...alumniInfo, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="alum-password">Password</Label>
-                  <Input
-                    id="alum-password"
-                    type="password"
-                    placeholder="password"
-                    value={alumniInfo.password}
-                    onChange={(e) =>
-                      setAlumniInfo({ ...alumniInfo, password: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full" onClick={handleStudentSubmit}>
+                    Submit as Student
+                  </Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+
+            {/* Alumni Form */}
+            <TabsContent value="Alumni">
+              <Card className="backdrop-blur-md bg-white/10 border border-white/20 text-white">
+                <CardHeader>
+                  <CardTitle>Alumni Sign Up</CardTitle>
+                  <CardDescription>
+                    Fill your alumni details. Click submit when you're done.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="alumni-grad-year">Year of Graduation</Label>
+                    <Label htmlFor="alumni-name">Full Name</Label>
                     <Input
-                      id="alumni-grad-year"
-                      type="number"
-                      value={alumniInfo.gradYear}
-                      onChange={(e) =>
-                        setAlumniInfo({
-                          ...alumniInfo,
-                          gradYear: e.target.value,
-                        })
+                      id="alumni-name"
+                      placeholder="Jane Smith"
+                      value={alumniInfo.name}
+                      onChange={(e) => setAlumniInfo({ ...alumniInfo, name: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="alum-email">Email</Label>
+                    <Input
+                      id="alum-email"
+                      type="email"
+                      placeholder="someone@gmail.com"
+                      value={alumniInfo.email}
+                      onChange={(e) => setAlumniInfo({ ...alumniInfo, email: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="alum-password">Password</Label>
+                    <Input
+                      id="alum-password"
+                      type="password"
+                      placeholder="password"
+                      value={alumniInfo.password}
+                      onChange={(e) => setAlumniInfo({ ...alumniInfo, password: e.target.value })}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="alumni-grad-year">Year of Graduation</Label>
+                      <Input
+                        id="alumni-grad-year"
+                        type="number"
+                        value={alumniInfo.gradYear}
+                        onChange={(e) =>
+                          setAlumniInfo({ ...alumniInfo, gradYear: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="alumni-position">Current Working Position</Label>
+                      <Input
+                        id="alumni-position"
+                        value={alumniInfo.position}
+                        onChange={(e) =>
+                          setAlumniInfo({ ...alumniInfo, position: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Areas of Interest</Label>
+                    <MultiSelectDropdown
+                      selected={alumniInfo.interests}
+                      setSelected={(newInterests) =>
+                        setAlumniInfo({ ...alumniInfo, interests: newInterests })
                       }
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="alumni-position">
-                      Current Working Position
-                    </Label>
-                    <Input
-                      id="alumni-position"
-                      value={alumniInfo.position}
+                    <Label htmlFor="alumni-description">Description</Label>
+                    <Textarea
+                      id="alumni-description"
+                      placeholder="Write a short bio or anything you want to share..."
+                      value={alumniInfo.description}
                       onChange={(e) =>
-                        setAlumniInfo({
-                          ...alumniInfo,
-                          position: e.target.value,
-                        })
+                        setAlumniInfo({ ...alumniInfo, description: e.target.value })
                       }
                     />
                   </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label>Areas of Interest</Label>
-                  <MultiSelectDropdown
-                    selected={alumniInfo.interests}
-                    setSelected={(newInterests) =>
-                      setAlumniInfo({
-                        ...alumniInfo,
-                        interests: newInterests,
-                      })
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="alumni-description">Description</Label>
-                  <Textarea
-                    id="alumni-description"
-                    placeholder="Write a short bio or anything you want to share..."
-                    value={alumniInfo.description}
-                    onChange={(e) =>
-                      setAlumniInfo({
-                        ...alumniInfo,
-                        description: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" onClick={handleAlumniSubmit}>
-                  Submit as Alumni
-                </Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full" onClick={handleAlumniSubmit}>
+                    Submit as Alumni
+                  </Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );
