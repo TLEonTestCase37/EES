@@ -58,7 +58,7 @@ export default function Home() {
                 Igniting innovation, building community, and celebrating the
                 legacy of electronics engineering.
                 <br className="hidden sm:inline" />
-                Whether you're an alumnus or a curious student, you're always
+                Whether you are an alumnus or a curious student, you are always
                 part of the EES family.
               </p>
             </div>
