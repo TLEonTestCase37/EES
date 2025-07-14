@@ -33,7 +33,7 @@ export function AppSidebar({ curUser, ...props }) {
     navMain: [
       {
         title: "Home",
-        url: "/",
+        url: "/dashboard",
         icon: IconDashboard,
       },
       {

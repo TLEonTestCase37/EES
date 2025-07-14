@@ -25,11 +25,22 @@ import { SiteHeader } from "@/components/site-header";
 import { AppSidebar } from "@/components/app-sidebar";
 
 const TAGS = [
-  "VLSI", "Embedded Systems", "Microwave and Antenna Design",
-  "Cloud Computing & DevOps", "Blockchain and Cryptography",
-  "PCB Design and Fabrication", "SDE", "AI", "Robotics",
-  "Finance", "Startups", "Art", "ML", "Teaching",
-  "Data Science", "Design",
+  "VLSI",
+  "Embedded Systems",
+  "Microwave and Antenna Design",
+  "Cloud Computing & DevOps",
+  "Blockchain and Cryptography",
+  "PCB Design and Fabrication",
+  "SDE",
+  "AI",
+  "Robotics",
+  "Finance",
+  "Startups",
+  "Art",
+  "ML",
+  "Teaching",
+  "Data Science",
+  "Design",
 ];
 
 export default function PeopleSearchShadcn() {
@@ -39,7 +50,10 @@ export default function PeopleSearchShadcn() {
   const [queryText, setQueryText] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
-  const [filterRole, setFilterRole] = useState({ student: false, alumni: false });
+  const [filterRole, setFilterRole] = useState({
+    student: false,
+    alumni: false,
+  });
   const [yearRange, setYearRange] = useState({ from: "", to: "" });
   const [selectedInterests, setSelectedInterests] = useState([]);
 
@@ -61,20 +75,41 @@ export default function PeopleSearchShadcn() {
     try {
       let baseQuery;
       if (filterRole.student && !filterRole.alumni)
-        baseQuery = query(collection(db, "users"), where("role", "==", "student"), limit(500));
+        baseQuery = query(
+          collection(db, "users"),
+          where("role", "==", "student"),
+          limit(500)
+        );
       else if (!filterRole.student && filterRole.alumni)
-        baseQuery = query(collection(db, "users"), where("role", "==", "alumni"), limit(500));
+        baseQuery = query(
+          collection(db, "users"),
+          where("role", "==", "alumni"),
+          limit(500)
+        );
       else baseQuery = query(collection(db, "users"), limit(500));
 
       const snapshot = await getDocs(baseQuery);
-      const allUsers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const allUsers = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       const filtered = allUsers.filter((u) => {
         if (curUser?.uid === u.id) return false;
-        if (queryText && !u.nameLower?.includes(queryText.toLowerCase())) return false;
+        if (queryText && !u.nameLower?.includes(queryText.toLowerCase()))
+          return false;
         const year = u.role === "student" ? u.passOutYear : u.passingYear;
-        if ((yearRange.from && year < +yearRange.from) || (yearRange.to && year > +yearRange.to)) return false;
-        if (selectedInterests.length > 0 && (!u.areasOfInterest || !u.areasOfInterest.some((i) => selectedInterests.includes(i)))) return false;
+        if (
+          (yearRange.from && year < +yearRange.from) ||
+          (yearRange.to && year > +yearRange.to)
+        )
+          return false;
+        if (
+          selectedInterests.length > 0 &&
+          (!u.areasOfInterest ||
+            !u.areasOfInterest.some((i) => selectedInterests.includes(i)))
+        )
+          return false;
         return true;
       });
 
@@ -86,13 +121,23 @@ export default function PeopleSearchShadcn() {
     }
   };
 
-  if (loading) return <div className="flex justify-center p-8 text-muted-foreground">Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen w-full">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-t-transparent border-black" />
+      </div>
+    );
 
   return (
-    <SidebarProvider style={{ "--sidebar-width": "calc(var(--spacing)*72)", "--header-height": "calc(var(--spacing)*12)" }}>
+    <SidebarProvider
+      style={{
+        "--sidebar-width": "calc(var(--spacing)*72)",
+        "--header-height": "calc(var(--spacing)*12)",
+      }}
+    >
       {curUser && <AppSidebar variant="inset" curUser={curUser} />}
       <SidebarInset>
-        <SiteHeader  auth={auth}/>
+        <SiteHeader auth={auth} />
         <div className="flex flex-col md:flex-row gap-6 px-4 py-6">
           <Sheet>
             <SheetTrigger asChild>
@@ -108,11 +153,21 @@ export default function PeopleSearchShadcn() {
                   <Label className="text-base">Role</Label>
                   <div className="flex flex-col gap-1 pt-2">
                     <label className="flex items-center gap-2">
-                      <Checkbox checked={filterRole.student} onCheckedChange={(v) => setFilterRole((r) => ({ ...r, student: !!v }))} />
+                      <Checkbox
+                        checked={filterRole.student}
+                        onCheckedChange={(v) =>
+                          setFilterRole((r) => ({ ...r, student: !!v }))
+                        }
+                      />
                       Student
                     </label>
                     <label className="flex items-center gap-2">
-                      <Checkbox checked={filterRole.alumni} onCheckedChange={(v) => setFilterRole((r) => ({ ...r, alumni: !!v }))} />
+                      <Checkbox
+                        checked={filterRole.alumni}
+                        onCheckedChange={(v) =>
+                          setFilterRole((r) => ({ ...r, alumni: !!v }))
+                        }
+                      />
                       Alumni
                     </label>
                   </div>
@@ -121,8 +176,22 @@ export default function PeopleSearchShadcn() {
                 <div>
                   <Label className="text-base">Year Range</Label>
                   <div className="flex gap-2 pt-2">
-                    <Input type="number" placeholder="From" value={yearRange.from} onChange={(e) => setYearRange({ ...yearRange, from: e.target.value })} />
-                    <Input type="number" placeholder="To" value={yearRange.to} onChange={(e) => setYearRange({ ...yearRange, to: e.target.value })} />
+                    <Input
+                      type="number"
+                      placeholder="From"
+                      value={yearRange.from}
+                      onChange={(e) =>
+                        setYearRange({ ...yearRange, from: e.target.value })
+                      }
+                    />
+                    <Input
+                      type="number"
+                      placeholder="To"
+                      value={yearRange.to}
+                      onChange={(e) =>
+                        setYearRange({ ...yearRange, to: e.target.value })
+                      }
+                    />
                   </div>
                 </div>
 
@@ -133,11 +202,17 @@ export default function PeopleSearchShadcn() {
                       {TAGS.map((tag) => (
                         <Button
                           key={tag}
-                          variant={selectedInterests.includes(tag) ? "default" : "outline"}
+                          variant={
+                            selectedInterests.includes(tag)
+                              ? "default"
+                              : "outline"
+                          }
                           size="sm"
                           onClick={() =>
                             setSelectedInterests((prev) =>
-                              prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+                              prev.includes(tag)
+                                ? prev.filter((t) => t !== tag)
+                                : [...prev, tag]
                             )
                           }
                         >
@@ -153,7 +228,11 @@ export default function PeopleSearchShadcn() {
 
           <div className="flex-1 space-y-4">
             <div className="flex gap-2">
-              <Input placeholder="Search by name..." value={queryText} onChange={(e) => setQueryText(e.target.value)} />
+              <Input
+                placeholder="Search by name..."
+                value={queryText}
+                onChange={(e) => setQueryText(e.target.value)}
+              />
               <Button onClick={handleSearch}>Search</Button>
             </div>
 
@@ -174,7 +253,10 @@ export default function PeopleSearchShadcn() {
                     {u.areasOfInterest?.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-1">
                         {u.areasOfInterest.map((tag) => (
-                          <span key={tag} className="px-2 py-1 bg-muted rounded-full text-xs">
+                          <span
+                            key={tag}
+                            className="px-2 py-1 bg-muted rounded-full text-xs"
+                          >
                             {tag}
                           </span>
                         ))}

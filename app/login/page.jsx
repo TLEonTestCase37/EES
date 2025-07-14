@@ -1,5 +1,5 @@
-'use client'
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,27 +11,43 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/firebaseConfig";
-
 export default function CardDemo() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push("/dashboard");
+      }
+      setLoading(false);
+    });
+
+    return () => unsub(); // Clean up the listener
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard"); 
+      router.push("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
       setError("Invalid email or password");
     }
   };
-
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen w-full">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-t-transparent border-black" />
+      </div>
+    );
+  }
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <Card className="w-full max-w-sm">

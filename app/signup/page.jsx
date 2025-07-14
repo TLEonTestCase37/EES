@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import MultiSelectDropdown from "@/components/multiselect";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, setDoc,updateDoc,arrayUnion } from "firebase/firestore";
+import { doc, setDoc,updateDoc,arrayUnion } from "firebase/firestore";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
 export default function SignUp() {

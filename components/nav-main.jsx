@@ -14,13 +14,16 @@ export function NavMain({ items }) {
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem   key={item.title}>
-                <Link href={item.url}>
-              <SidebarMenuButton className="cursor-pointer" tooltip={item.title}>
+            <SidebarMenuItem key={item.title}>
+              <Link href={item.url}>
+                <SidebarMenuButton
+                  className="cursor-pointer"
+                  tooltip={item.title}
+                >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
-              </SidebarMenuButton>
-                </Link>
+                </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>

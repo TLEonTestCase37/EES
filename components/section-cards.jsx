@@ -27,7 +27,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+
 export function SectionCards({ curUser }) {
   const [forums, setForums] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -269,9 +269,6 @@ export function SectionCards({ curUser }) {
                     <Button size="sm" onClick={() => setSelectedThread(thread)}>
                       Expand
                     </Button>
-                    {/* <Link href={`/dashboard/thread/${thread.id}`}>
-                      <Button size="sm">Open</Button>
-                    </Link> */}
                   </SheetTrigger>
                   <SheetContent side="left" className="w-full sm:w-[500px]">
                     <SheetHeader>

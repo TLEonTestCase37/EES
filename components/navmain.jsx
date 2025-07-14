@@ -53,12 +53,12 @@ const components = [
 
 export function NavigationMenuDemo() {
   return (
-    <NavigationMenu viewport={false}>
+    <NavigationMenu viewport={false} className="relative z-50">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Explore</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+          <NavigationMenuContent className="z-50 bg-white/90 text-black backdrop-blur-md rounded-md shadow-lg">
+            <ul className="text-white grid w-full sm:w-[400px] md:w-[500px] lg:w-[600px] grid-cols-1 md:grid-cols-2 gap-2 max-w-[90vw] md:max-w-none overflow-y-auto max-h-[80vh] p-2">
               {components.map((component) => (
                 <ListItem
                   key={component.title}
@@ -73,7 +73,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Community</NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="z-50 bg-white/90 text-black backdrop-blur-md rounded-md shadow-lg">
             <ul className="grid w-[300px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
@@ -119,7 +119,7 @@ export function NavigationMenuDemo() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>With Icon</NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="z-50 bg-white/90 text-black backdrop-blur-md rounded-md shadow-lg">
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
@@ -152,9 +152,14 @@ function ListItem({ title, children, href, ...props }) {
   return (
     <li {...props}>
       <NavigationMenuLink asChild>
-        <Link href={href} className="block p-2 hover:bg-accent rounded-md">
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="text-muted-foreground text-sm leading-snug line-clamp-2">
+        <Link
+          href={href}
+          className="block p-2 hover:bg-accent rounded-md text-black"
+        >
+          <div className="text-sm font-medium leading-none text-black">
+            {title}
+          </div>
+          <p className="text-sm leading-snug line-clamp-2 text-gray-700">
             {children}
           </p>
         </Link>
@@ -162,4 +167,3 @@ function ListItem({ title, children, href, ...props }) {
     </li>
   );
 }
-

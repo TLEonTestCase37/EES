@@ -7,10 +7,11 @@ import { auth } from "@/firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { doc,getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 
 export default function Page() {
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [curUser, setCurUser] = useState(null);
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function Page() {
         try {
           const docRef = doc(db, "users", firebaseUser.uid);
           const docSnap = await getDoc(docRef);
-  
+
           if (docSnap.exists()) {
             const userData = docSnap.data();
             setCurUser({
@@ -39,10 +40,12 @@ export default function Page() {
           }
         } catch (err) {
           console.error("Error fetching user data:", err);
+        } finally {
+          setLoading(false);
         }
       }
     });
-  
+
     return () => unsub();
   }, []);
 
@@ -53,17 +56,27 @@ export default function Page() {
         "--header-height": "calc(var(--spacing) * 12)",
       }}
     >
-      {curUser && <AppSidebar variant="inset" curUser={curUser} />}
-      <SidebarInset>
-        <SiteHeader auth={auth} />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards curUser={curUser}/>
-            </div>
-          </div>
+      {loading ? (
+        // Loader while loading
+        <div className="flex items-center justify-center h-screen w-full">
+          <div className="animate-spin rounded-full h-10 w-10 border-4 border-t-transparent border-black" />
         </div>
-      </SidebarInset>
+      ) : (
+        <>
+          {curUser && <AppSidebar variant="inset" curUser={curUser} />}
+          <SidebarInset>
+            <SiteHeader auth={auth} />
+            <div className="flex flex-1 flex-col">
+              <div className="@container/main flex flex-1 flex-col gap-2">
+                <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                  <SectionCards curUser={curUser} />
+                </div>
+              </div>
+            </div>
+          </SidebarInset>
+        </>
+      )}
     </SidebarProvider>
   );
+  
 }
