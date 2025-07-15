@@ -80,7 +80,7 @@ export default function Home() {
       <div className="relative z-10 p-8 sm:p-20">
         {/* Navigation */}
         <div className="sticky top-0 z-50 flex justify-center">
-          <div className="bg-white/80 backdrop-blur-md px-6 py-3 rounded-xl shadow-md w-full max-w-2xl mx-auto flex items-center justify-center">
+          <div className="bg-white/80 backdrop-blur-md px-6 py-3 rounded-xl shadow-md w-full mx-auto flex items-center justify-center">
             <NavigationMenuDemo />
           </div>
         </div>

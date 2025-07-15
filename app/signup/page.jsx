@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import MultiSelectDropdown from "@/components/multiselect";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc,updateDoc,arrayUnion } from "firebase/firestore";
+import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
 export default function SignUp() {
@@ -34,7 +34,6 @@ export default function SignUp() {
   const [alumniInfo, setAlumniInfo] = useState({
     name: "",
     email: "",
-    password: "",
     gradYear: "",
     position: "",
     interests: [],
@@ -106,8 +105,37 @@ export default function SignUp() {
     }
   };
 
-  const handleAlumniSubmit = () => {
-    console.log("Alumni Info:", alumniInfo);
+  const handleAlumniSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("/api/pendingUsers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(alumniInfo),
+      });
+
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
+
+      if (!res.ok) {
+        alert(data.message || "Submission failed");
+        return;
+      }
+
+      alert("Your request has been submitted successfully!");
+      setAlumniInfo({
+        name: "",
+        email: "",
+        gradYear: "",
+        position: "",
+        interests: [],
+        description: "",
+      });
+    } catch (err) {
+      console.error("Submission error:", err);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -131,7 +159,8 @@ export default function SignUp() {
                 <CardHeader>
                   <CardTitle>Student Sign Up</CardTitle>
                   <CardDescription>
-                    Fill your details as a student. Click submit when you're done.
+                    Fill your details as a student. Click submit when you're
+                    done.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4">
@@ -141,7 +170,9 @@ export default function SignUp() {
                       id="student-name"
                       placeholder="John Doe"
                       value={studentInfo.name}
-                      onChange={(e) => setStudentInfo({ ...studentInfo, name: e.target.value })}
+                      onChange={(e) =>
+                        setStudentInfo({ ...studentInfo, name: e.target.value })
+                      }
                     />
                   </div>
                   <div className="grid gap-2">
@@ -151,7 +182,12 @@ export default function SignUp() {
                       type="email"
                       placeholder="virat.kohli23@itbhu.ac.in"
                       value={studentInfo.email}
-                      onChange={(e) => setStudentInfo({ ...studentInfo, email: e.target.value })}
+                      onChange={(e) =>
+                        setStudentInfo({
+                          ...studentInfo,
+                          email: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="grid gap-2">
@@ -161,17 +197,29 @@ export default function SignUp() {
                       type="password"
                       placeholder="password"
                       value={studentInfo.password}
-                      onChange={(e) => setStudentInfo({ ...studentInfo, password: e.target.value })}
+                      onChange={(e) =>
+                        setStudentInfo({
+                          ...studentInfo,
+                          password: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
-                      <Label htmlFor="student-roll">Institute Roll Number</Label>
+                      <Label htmlFor="student-roll">
+                        Institute Roll Number
+                      </Label>
                       <Input
                         id="student-roll"
                         placeholder="23095000"
                         value={studentInfo.rollNo}
-                        onChange={(e) => setStudentInfo({ ...studentInfo, rollNo: e.target.value })}
+                        onChange={(e) =>
+                          setStudentInfo({
+                            ...studentInfo,
+                            rollNo: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div className="grid gap-2">
@@ -180,7 +228,12 @@ export default function SignUp() {
                         id="student-grad-year"
                         type="number"
                         value={studentInfo.gradYear}
-                        onChange={(e) => setStudentInfo({ ...studentInfo, gradYear: e.target.value })}
+                        onChange={(e) =>
+                          setStudentInfo({
+                            ...studentInfo,
+                            gradYear: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -189,7 +242,10 @@ export default function SignUp() {
                     <MultiSelectDropdown
                       selected={studentInfo.interests}
                       setSelected={(newInterests) =>
-                        setStudentInfo({ ...studentInfo, interests: newInterests })
+                        setStudentInfo({
+                          ...studentInfo,
+                          interests: newInterests,
+                        })
                       }
                     />
                   </div>
@@ -200,7 +256,10 @@ export default function SignUp() {
                       placeholder="A brief description about yourself..."
                       value={studentInfo.description}
                       onChange={(e) =>
-                        setStudentInfo({ ...studentInfo, description: e.target.value })
+                        setStudentInfo({
+                          ...studentInfo,
+                          description: e.target.value,
+                        })
                       }
                     />
                   </div>
@@ -229,7 +288,9 @@ export default function SignUp() {
                       id="alumni-name"
                       placeholder="Jane Smith"
                       value={alumniInfo.name}
-                      onChange={(e) => setAlumniInfo({ ...alumniInfo, name: e.target.value })}
+                      onChange={(e) =>
+                        setAlumniInfo({ ...alumniInfo, name: e.target.value })
+                      }
                     />
                   </div>
                   <div className="grid gap-2">
@@ -239,38 +300,40 @@ export default function SignUp() {
                       type="email"
                       placeholder="someone@gmail.com"
                       value={alumniInfo.email}
-                      onChange={(e) => setAlumniInfo({ ...alumniInfo, email: e.target.value })}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="alum-password">Password</Label>
-                    <Input
-                      id="alum-password"
-                      type="password"
-                      placeholder="password"
-                      value={alumniInfo.password}
-                      onChange={(e) => setAlumniInfo({ ...alumniInfo, password: e.target.value })}
+                      onChange={(e) =>
+                        setAlumniInfo({ ...alumniInfo, email: e.target.value })
+                      }
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
-                      <Label htmlFor="alumni-grad-year">Year of Graduation</Label>
+                      <Label htmlFor="alumni-grad-year">
+                        Year of Graduation
+                      </Label>
                       <Input
                         id="alumni-grad-year"
                         type="number"
                         value={alumniInfo.gradYear}
                         onChange={(e) =>
-                          setAlumniInfo({ ...alumniInfo, gradYear: e.target.value })
+                          setAlumniInfo({
+                            ...alumniInfo,
+                            gradYear: e.target.value,
+                          })
                         }
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="alumni-position">Current Working Position</Label>
+                      <Label htmlFor="alumni-position">
+                        Current Working Position
+                      </Label>
                       <Input
                         id="alumni-position"
                         value={alumniInfo.position}
                         onChange={(e) =>
-                          setAlumniInfo({ ...alumniInfo, position: e.target.value })
+                          setAlumniInfo({
+                            ...alumniInfo,
+                            position: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -280,7 +343,10 @@ export default function SignUp() {
                     <MultiSelectDropdown
                       selected={alumniInfo.interests}
                       setSelected={(newInterests) =>
-                        setAlumniInfo({ ...alumniInfo, interests: newInterests })
+                        setAlumniInfo({
+                          ...alumniInfo,
+                          interests: newInterests,
+                        })
                       }
                     />
                   </div>
@@ -291,7 +357,10 @@ export default function SignUp() {
                       placeholder="Write a short bio or anything you want to share..."
                       value={alumniInfo.description}
                       onChange={(e) =>
-                        setAlumniInfo({ ...alumniInfo, description: e.target.value })
+                        setAlumniInfo({
+                          ...alumniInfo,
+                          description: e.target.value,
+                        })
                       }
                     />
                   </div>
