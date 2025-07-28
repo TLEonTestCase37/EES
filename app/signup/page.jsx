@@ -19,6 +19,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 export default function SignUp() {
   const router = useRouter();
   const [studentInfo, setStudentInfo] = useState({
@@ -42,7 +43,7 @@ export default function SignUp() {
 
   const handleStudentSubmit = async () => {
     if (
-      // studentInfo.email.endsWith("@itbhu.ac.in") &&
+      studentInfo.email.endsWith("@itbhu.ac.in") &&
       studentInfo.name.trim().length > 1 &&
       Number(studentInfo.gradYear) >= 2024 &&
       Number(studentInfo.gradYear) <= 2029 &&
@@ -90,6 +91,7 @@ export default function SignUp() {
 
         console.log("Student registered and added to tag subscriptions!");
         router.push("/dashboard");
+        toast.success("User Created Successfully")
       } catch (error) {
         console.log("Registration failed:", error);
       }

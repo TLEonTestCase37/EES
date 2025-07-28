@@ -118,28 +118,23 @@ export function NavigationMenuDemo() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>With Icon</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Profile</NavigationMenuTrigger>
           <NavigationMenuContent className="z-50 bg-white/90 text-black backdrop-blur-md rounded-md shadow-lg">
             <ul className="grid w-[200px] gap-4">
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="#" className="flex-row items-center gap-2">
+                  <Link href="/signup" className="flex-row items-center gap-2">
                     <CircleHelpIcon />
-                    Backlog
+                    Sign Up
                   </Link>
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
-                  <Link href="#" className="flex-row items-center gap-2">
+                  <Link href="/login" className="flex-row items-center gap-2">
                     <CircleIcon />
-                    To Do
+                    Log In
                   </Link>
                 </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link href="#" className="flex-row items-center gap-2">
-                    <CircleCheckIcon />
-                    Done
-                  </Link>
-                </NavigationMenuLink>
+                
               </li>
             </ul>
           </NavigationMenuContent>

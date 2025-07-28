@@ -183,7 +183,7 @@ export default function ChatPage() {
 
   if (!curUser) {
     return (
-      <div className="flex items-center justify-center h-screen w-full">
+      <div className="flex items-center justify-center h-screen w-full bg-gradient-to-br from-gray-100 to-gray-200">
         <div className="animate-spin rounded-full h-10 w-10 border-4 border-t-transparent border-black" />
       </div>
     );
@@ -199,12 +199,12 @@ export default function ChatPage() {
       <AppSidebar variant="inset" curUser={curUser} />
       <SidebarInset>
         <SiteHeader auth={auth} />
-        <div className="flex h-[calc(100vh-var(--header-height))]">
+        <div className="flex h-[calc(100vh-var(--header-height))] bg-gradient-to-br from-[#f7f8fa] to-[#e8edf3]">
           {/* Left Panel – Chat List */}
-          <div className="w-[300px] border-r">
-            <Card className="h-full rounded-none">
-              <CardHeader className="p-4">
-                <Input placeholder="Search chats..." />
+          <div className="w-[300px] border-r bg-white shadow-inner">
+            <Card className="h-full rounded-none border-none">
+              <CardHeader className="p-4 border-b">
+                <Input placeholder="Search chats..." className="rounded-lg" />
               </CardHeader>
               <ScrollArea className="h-[calc(100vh-6rem)] px-4">
                 {chatPreviews.length === 0 ? (
@@ -215,8 +215,10 @@ export default function ChatPage() {
                   chatPreviews.map((chat) => (
                     <div
                       key={chat.roomId}
-                      className={`flex items-center gap-3 py-3 cursor-pointer rounded-md px-2 hover:bg-muted ${
-                        selectedRoomId === chat.roomId ? "bg-muted" : ""
+                      className={`flex items-center gap-3 py-3 px-2 cursor-pointer rounded-md transition-colors ${
+                        selectedRoomId === chat.roomId
+                          ? "bg-blue-100"
+                          : "hover:bg-gray-100"
                       }`}
                       onClick={() => {
                         router.push(`/chat?roomId=${chat.roomId}`);
@@ -224,7 +226,7 @@ export default function ChatPage() {
                     >
                       <Avatar>
                         <AvatarImage src="" />
-                        <AvatarFallback>
+                        <AvatarFallback className="bg-blue-200 text-blue-800 font-semibold">
                           {chat.otherName.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -242,14 +244,14 @@ export default function ChatPage() {
           </div>
 
           {/* Right Panel – Chat Window */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col bg-white rounded-l-xl shadow-md overflow-hidden">
             {selectedRoomId ? (
               <>
-                <div className="border-b px-4 py-3 font-semibold text-base">
+                <div className="border-b px-4 py-3 font-semibold text-base bg-gray-50 shadow-sm">
                   {otherUser?.name || "Loading..."}
                 </div>
 
-                <ScrollArea className="flex-1 p-4">
+                <ScrollArea className="flex-1 p-4 bg-gradient-to-br from-white to-gray-50">
                   {messages.map((msg, idx) => {
                     const time = msg.timestamp
                       ?.toDate?.()
@@ -261,36 +263,40 @@ export default function ChatPage() {
                     return (
                       <div
                         key={idx}
-                        className={`mb-2 px-3 py-2 rounded-lg w-fit max-w-[70%] ${
+                        className={`mb-2 px-4 py-2 rounded-xl w-fit max-w-[70%] transition-all ${
                           msg.senderUid === curUser.uid
-                            ? "ml-auto bg-primary text-white"
-                            : "mr-auto bg-muted"
+                            ? "ml-auto bg-blue-500 text-white"
+                            : "mr-auto bg-gray-200"
                         }`}
                       >
                         <div>{msg.text}</div>
                         {time && (
-                          <div className="text-[10px] text-muted-foreground text-right mt-1">
+                          <div className="text-[10px] text-gray-500 text-right mt-1">
                             {time}
                           </div>
                         )}
                       </div>
                     );
                   })}
-
                   <div ref={bottomRef} />
                 </ScrollArea>
 
-                <div className="p-4 border-t flex items-center gap-2">
+                <div className="p-4 border-t bg-white flex items-center gap-2 shadow-sm">
                   <Input
                     placeholder="Type a message..."
-                    className="flex-1"
+                    className="flex-1 rounded-full px-4 py-2 border-gray-300"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") handleSend();
                     }}
                   />
-                  <Button onClick={handleSend}>Send</Button>
+                  <Button
+                    onClick={handleSend}
+                    className="rounded-full px-6 bg-blue-600 hover:bg-blue-700"
+                  >
+                    Send
+                  </Button>
                 </div>
               </>
             ) : (
@@ -298,13 +304,15 @@ export default function ChatPage() {
                 <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
                   Select a chat to start messaging
                 </div>
-                <div className="p-4 border-t flex items-center gap-2">
+                <div className="p-4 border-t flex items-center gap-2 bg-white shadow-sm">
                   <Input
                     placeholder="Type a message..."
                     className="flex-1"
                     disabled
                   />
-                  <Button disabled>Send</Button>
+                  <Button disabled className="bg-gray-300">
+                    Send
+                  </Button>
                 </div>
               </>
             )}

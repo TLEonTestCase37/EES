@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/firebaseConfig";
+import { toast } from "react-toastify";
 export default function CardDemo() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -36,6 +37,7 @@ export default function CardDemo() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/dashboard");
+      toast.success("Logged In Succesfully");
     } catch (error) {
       console.error("Login failed:", error);
       setError("Invalid email or password");
